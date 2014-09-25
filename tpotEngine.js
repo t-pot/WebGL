@@ -153,7 +153,7 @@ var tpotEngine = function(){
 			var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
 			if (status != gl.FRAMEBUFFER_COMPLETE) {
 				alert("can not render to floating point textures");
-				return;
+				return null;
 			}
 			
 			gl.bindTexture(gl.TEXTURE_2D, null);
