@@ -61,7 +61,6 @@ onload = function(){
 	tpotMat.multiply(pMatrix, vMatrix, tmpMatrix);
 	
 	// 状態初期化
-	gl.enable(gl.DEPTH_TEST);
 	gl.depthFunc(gl.LEQUAL);
 	gl.enable(gl.CULL_FACE);
 	
@@ -76,6 +75,8 @@ onload = function(){
 		gl.clearDepth(1.0);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.viewport(0.0, 0.0, 512, 512);
+		
+		gl.enable(gl.DEPTH_TEST);
 		
 		// シーンの描画
 		var rad = (frames % 360) * Math.PI / 180;
@@ -102,12 +103,9 @@ onload = function(){
 		gl.drawElements(gl.TRIANGLES, 3*2328, gl.UNSIGNED_SHORT, 0);
 		
 		// 元のフレームバッファに戻す
-		gl.useProgram(prg_tonemap);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		
-		gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		gl.clearDepth(1.0);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.disable(gl.DEPTH_TEST);
 		gl.viewport(0.0, 0.0, 512, 512);
 
 		// 画面全体を覆うスクリーンを描いてトーンマッピング
