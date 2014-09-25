@@ -37,7 +37,6 @@ onload = function(){
 		format = gl.UNSIGNED_BYTE;
 		alert("OES_texture_float is not supported!");
 	}
-	format = gl.UNSIGNED_BYTE;
 	
 	var fBuffer = tpotEngine.create_framebuffer(0, 0, format, gl);
 	
