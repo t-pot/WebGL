@@ -60,7 +60,13 @@ var tpotEngine = function(){
 			c.width = screen_size[0] = width;
 			c.height = screen_size[1] = height;
 
-			return c.getContext('webgl') || c.getContext('experimental-webgl');
+			var gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+			
+			if(gl==null){
+				alert("WebGL is not supported!");
+			}
+			
+			return gl;
 		},
 
 		get_program: function(shader_type, gl)
