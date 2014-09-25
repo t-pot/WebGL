@@ -128,7 +128,14 @@
 			varying vec2 vTexCoord;
 
 			void main(void){
-				gl_FragColor = texture2D(texture, vTexCoord);
+				vec4 decale = texture2D(texture, vTexCoord);
+				decale.xyz = 1.0 - exp( -0.5 * decale.xyz);
+				// gamma coreect
+				gl_FragColor = vec4(
+								pow(decale.x, 1.0/2.2),
+								pow(decale.y, 1.0/2.2), 
+								pow(decale.z, 1.0/2.2), 
+								decale.w);
 			}
 		</script>
 
