@@ -1,4 +1,5 @@
 onload = function(){
+	alert("TEST!");
 
 	var gl = tpotEngine.getContext(512, 512);
 	
@@ -20,13 +21,6 @@ onload = function(){
 	uniLocation[5] = gl.getUniformLocation(prg, 'texture');
 
 	// トーンマッピング用のオブジェクト初期化
-	var ext;
-	var format = gl.FLOAT;
-	ext = gl.getExtension('OES_texture_float');
-	if(ext == null){
-		format = gl.UNSIGNED_BYTE;
-	}
-	
 	var prg_tonemap = tpotEngine.get_program(SHADER_TYPE.TONEMAP, gl);
 	var vbo_tonemap = tpotEngine.create_vbo(
 		[-1,-1,0.5, 0,0,
@@ -37,6 +31,13 @@ onload = function(){
 	var ibo_tonemap = tpotEngine.create_ibo(
 		[0,1,2, 1,3,2], 
 		gl);
+
+	var format = gl.FLOAT;
+	var ext = gl.getExtension('OES_texture_float');
+	if(ext == null){
+		format = gl.UNSIGNED_BYTE;
+	}
+	
 	var fBuffer = tpotEngine.create_framebuffer(0, 0, format, gl);
 	
 	var uniLocation_tonemap = new Array();
@@ -69,7 +70,7 @@ onload = function(){
 	
 	(function(){
 		// フレームバッファの変更
-//		gl.bindFramebuffer(gl.FRAMEBUFFER, fBuffer.f);
+		gl.bindFramebuffer(gl.FRAMEBUFFER, fBuffer.f);
 
 		gl.clearColor(0.0, 0.0, 0.0, 1.0);
 		gl.clearDepth(1.0);
@@ -100,21 +101,17 @@ onload = function(){
 		gl.drawElements(gl.TRIANGLES, 3*2328, gl.UNSIGNED_SHORT, 0);
 		
 		// 元のフレームバッファに戻す
-//		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-		
-//		gl.clearColor(0.0, 0.0, 0.0, 1.0);
-//		gl.clearDepth(1.0);
-//		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		
 		// 画面全体を覆うスクリーンを描いてトーンマッピング
-//		tpotEngine.set_attribute(vbo_tonemap, gl, prg_tonemap, SHADER_TYPE.TONEMAP);
-//		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo_tonemap);
+		tpotEngine.set_attribute(vbo_tonemap, gl, prg_tonemap, SHADER_TYPE.TONEMAP);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo_tonemap);
 
-//		gl.activeTexture(gl.TEXTURE0);
-//		gl.bindTexture(gl.TEXTURE_2D, fBuffer.t);
-//		gl.uniform1i(uniLocation_tonemap[0], 0);
+		gl.activeTexture(gl.TEXTURE0);
+		gl.bindTexture(gl.TEXTURE_2D, fBuffer.t);
+		gl.uniform1i(uniLocation_tonemap[0], 0);
 		
-//		gl.drawElements(gl.TRIANGLES, 3*2, gl.UNSIGNED_SHORT, 0);
+		gl.drawElements(gl.TRIANGLES, 3*2, gl.UNSIGNED_SHORT, 0);
 
 		// 描画更新
 		gl.flush();
