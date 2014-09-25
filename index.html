@@ -113,7 +113,6 @@
 		<script id="Tonemap_vs" type="x-shader/x-vertex">
 			attribute vec3 position;
 			attribute vec2 uv;
-			uniform   mat4 mvpMatrix;
 			varying   vec2 vTexCoord;
 
 			void main(void){
@@ -129,14 +128,7 @@
 			varying vec2 vTexCoord;
 
 			void main(void){
-				vec4 decale = texture2D(texture, vTexCoord);
-				decale.xyz = 1.0 - exp( -0.5 * decale.xyz);
-				// gamma coreect
-				gl_FragColor = vec4(
-								pow(decale.x, 1.0/2.2),
-								pow(decale.y, 1.0/2.2), 
-								pow(decale.z, 1.0/2.2), 
-								decale.w);
+				gl_FragColor = texture2D(texture, vTexCoord);
 			}
 		</script>
 
