@@ -219,7 +219,6 @@ var tpotEngine = function(){
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 				gl.generateMipmap(gl.TEXTURE_2D);
 				gl.bindTexture(gl.TEXTURE_2D, null);
-				texture = tex;
 			};
 			
 			tex.image.src = filename;

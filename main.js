@@ -81,26 +81,29 @@ onload = function(){
 		// シーンの描画
 		var rad = (frames % 360) * Math.PI / 180;
 		
-		tpotEngine.set_attribute(vbo, gl, prg, SHADER_TYPE.PHONG);
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_2D, tex);
-		
-		mMatrix = tpotMat.identity();
-		tpotMat.translate(mMatrix, [1.0, -1.0, 0.0], mMatrix);
-		tpotMat.rotate(mMatrix, rad, [0, 1, 0], mMatrix);
+		if(gl.isTexture(tex)){ // wait for load texture
+			tpotEngine.set_attribute(vbo, gl, prg, SHADER_TYPE.PHONG);
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+			gl.activeTexture(gl.TEXTURE0);
+			gl.bindTexture(gl.TEXTURE_2D, tex);
+			
+			mMatrix = tpotMat.identity();
+			tpotMat.translate(mMatrix, [1.0, -1.0, 0.0], mMatrix);
+			tpotMat.rotate(mMatrix, rad, [0, 1, 0], mMatrix);
 
-		tpotMat.multiply(tmpMatrix, mMatrix, mvpMatrix);
-		tpotMat.inverse(mMatrix, invMatrix);
+			tpotMat.multiply(tmpMatrix, mMatrix, mvpMatrix);
+			tpotMat.inverse(mMatrix, invMatrix);
 
-		gl.uniformMatrix4fv(uniLocation[0], false, mvpMatrix);
-		gl.uniformMatrix4fv(uniLocation[1], false, invMatrix);
-		gl.uniform3fv(uniLocation[2], lightDirection);
-		gl.uniform3fv(uniLocation[3], eyeDirection);
-		gl.uniform4fv(uniLocation[4], ambientColor);
-		gl.uniform1i(uniLocation[5], 0);
+			gl.uniformMatrix4fv(uniLocation[0], false, mvpMatrix);
+			gl.uniformMatrix4fv(uniLocation[1], false, invMatrix);
+			gl.uniform3fv(uniLocation[2], lightDirection);
+			gl.uniform3fv(uniLocation[3], eyeDirection);
+			gl.uniform4fv(uniLocation[4], ambientColor);
+			gl.uniform1i(uniLocation[5], 0);
+			
+			gl.drawElements(gl.TRIANGLES, 3*2328, gl.UNSIGNED_SHORT, 0);
+		}
 		
-		gl.drawElements(gl.TRIANGLES, 3*2328, gl.UNSIGNED_SHORT, 0);
 		
 		// 元のフレームバッファに戻す
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
