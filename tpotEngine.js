@@ -150,6 +150,12 @@ var tpotEngine = function(){
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fTexture, 0);
 			
+			var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+			if (status != gl.FRAMEBUFFER_COMPLETE) {
+				alert("can not render to floating point textures");
+				return;
+			}
+			
 			gl.bindTexture(gl.TEXTURE_2D, null);
 			gl.bindRenderbuffer(gl.RENDERBUFFER, null);
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
