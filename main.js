@@ -1,5 +1,4 @@
 onload = function(){
-	alert("TEST!");
 
 	var gl = tpotEngine.getContext(512, 512);
 	
@@ -36,6 +35,7 @@ onload = function(){
 	var ext = gl.getExtension('OES_texture_float');
 	if(ext == null){
 		format = gl.UNSIGNED_BYTE;
+		alert("OES_texture_float is not supported!");
 	}
 	
 	var fBuffer = tpotEngine.create_framebuffer(0, 0, format, gl);
