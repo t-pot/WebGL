@@ -153,11 +153,10 @@ var tpotEngine = function(){
 			var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
 			if (status != gl.FRAMEBUFFER_COMPLETE) {
 				if(format == gl.FLOAT){
-					// floating buffer がダメなときは、サポートされているはずのRGBA8での作成を試みる
 					alert("can not render to floating point textures");
-					return create_framebuffer(width, height, gl.UNSIGNED_BYTE, gl);
+				}else{
+					alert("can not render to assigned textures");
 				}
-				alert("can not render to assigned textures");
 				return null;
 			}
 			

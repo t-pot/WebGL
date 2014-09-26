@@ -39,6 +39,9 @@ onload = function(){
 	}
 	
 	var fBuffer = tpotEngine.create_framebuffer(0, 0, format, gl);
+	if(fBuffer == null && format == gl.FLOAT){
+		fBuffer = tpotEngine.create_framebuffer(0, 0, gl.UNSIGNED_BYTE, gl);
+	}
 	
 	var uniLocation_tonemap = new Array();
 	uniLocation_tonemap[0] = gl.getUniformLocation(prg_tonemap, 'texture');
