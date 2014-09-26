@@ -2,15 +2,15 @@ onload = function(){
 
 	var gl = tpotEngine.getContext(512, 512);
 	
-	// ƒV[ƒ“•`‰æ—p‚ÌƒIƒuƒWƒFƒNƒg
+	// ã‚·ãƒ¼ãƒ³æç”»ç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	var prg = tpotEngine.get_program(SHADER_TYPE.PHONG, gl);
 	
-	// VBO‚Ì¶¬
+	// VBOã®ç”Ÿæˆ
 	var vbo = tpotEngine.create_vbo(teapot_vtx_xnt, gl);
 	var ibo = tpotEngine.create_ibo(teapot_index, gl);
 	var tex = tpotEngine.createTexture('t-pot.png', gl);
 	
-	// uniformLocation‚Ìæ“¾
+	// uniformLocationã®å–å¾—
 	var uniLocation = new Array();
 	uniLocation[0] = gl.getUniformLocation(prg, 'mvpMatrix');
 	uniLocation[1] = gl.getUniformLocation(prg, 'invMatrix');
@@ -19,7 +19,7 @@ onload = function(){
 	uniLocation[4] = gl.getUniformLocation(prg, 'ambientColor');
 	uniLocation[5] = gl.getUniformLocation(prg, 'texture');
 
-	// ƒg[ƒ“ƒ}ƒbƒsƒ“ƒO—p‚ÌƒIƒuƒWƒFƒNƒg‰Šú‰»
+	// ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	var prg_tonemap = tpotEngine.get_program(SHADER_TYPE.TONEMAP, gl);
 	var vbo_tonemap = tpotEngine.create_vbo(
 		[-1,-1,0.5, 0,0,
@@ -39,15 +39,11 @@ onload = function(){
 	}
 	
 	var fBuffer = tpotEngine.create_framebuffer(0, 0, format, gl);
-	if(fBuffer == null){
-		// floating buffer ‚ªƒ_ƒ‚È‚Æ‚«‚ª‚ ‚é‚Ì‚ÅA‚»‚ÌÛ‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚é‚Í‚¸‚ÌRGBA8‚Å‚Ìì¬‚ğ‚İ‚é
-		fBuffer = tpotEngine.create_framebuffer(0, 0, gl.UNSIGNED_BYTE, gl);
-	}
 	
 	var uniLocation_tonemap = new Array();
 	uniLocation_tonemap[0] = gl.getUniformLocation(prg_tonemap, 'texture');
 	
-	// Šeís—ñ‚Ì¶¬‚Æ‰Šú‰»
+	// å„ç¨®è¡Œåˆ—ã®ç”Ÿæˆã¨åˆæœŸåŒ–
 	var mMatrix = tpotMat.identity();
 	var vMatrix = tpotMat.identity();
 	var pMatrix = tpotMat.identity();
@@ -55,24 +51,24 @@ onload = function(){
 	var mvpMatrix = tpotMat.identity();
 	var invMatrix = tpotMat.identity();
 	
-	var lightDirection = [1.5, 1.0, 0.5];		// •½sŒõŒ¹‚ÌŒü‚«
-	var ambientColor = [0.1, 0.1, 0.1, 1.0];	// ŠÂ‹«Œõ‚ÌF
-	var eyeDirection = [0.0, 1.0, 5.0];			// ‹“_ƒxƒNƒgƒ‹
+	var lightDirection = [1.5, 1.0, 0.5];		// å¹³è¡Œå…‰æºã®å‘ã
+	var ambientColor = [0.1, 0.1, 0.1, 1.0];	// ç’°å¢ƒå…‰ã®è‰²
+	var eyeDirection = [0.0, 1.0, 5.0];			// è¦–ç‚¹ãƒ™ã‚¯ãƒˆãƒ«
 	
-	// •ÏŠ·s—ñ
+	// å¤‰æ›è¡Œåˆ—
 	tpotMat.lookAt(eyeDirection, [1, -1, 0], [0, 1, 0], vMatrix);
 	tpotMat.perspective(45, tpotEngine.screen_width() / tpotEngine.screen_height(), 0.1, 100, pMatrix);
 	tpotMat.multiply(pMatrix, vMatrix, tmpMatrix);
 	
-	// ó‘Ô‰Šú‰»
+	// çŠ¶æ…‹åˆæœŸåŒ–
 	gl.depthFunc(gl.LEQUAL);
 	gl.enable(gl.CULL_FACE);
 	
-	// ƒJƒEƒ“ƒ^‚ÌéŒ¾
+	// ã‚«ã‚¦ãƒ³ã‚¿ã®å®£è¨€
 	var frames = 0;
 	
 	(function(){
-		// ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚Ì•ÏX
+		// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®å¤‰æ›´
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fBuffer.f);
 
 		gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -82,7 +78,7 @@ onload = function(){
 		
 		gl.enable(gl.DEPTH_TEST);
 		
-		// ƒV[ƒ“‚Ì•`‰æ
+		// ã‚·ãƒ¼ãƒ³ã®æç”»
 		var rad = (frames % 360) * Math.PI / 180;
 		
 		if(gl.isTexture(tex)){ // wait for load texture
@@ -109,13 +105,13 @@ onload = function(){
 		}
 		
 		
-		// Œ³‚ÌƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚É–ß‚·
+		// å…ƒã®ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã«æˆ»ã™
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		
 		gl.disable(gl.DEPTH_TEST);
 		gl.viewport(0.0, 0.0, 512, 512);
 
-		// ‰æ–Ê‘S‘Ì‚ğ•¢‚¤ƒXƒNƒŠ[ƒ“‚ğ•`‚¢‚Äƒg[ƒ“ƒ}ƒbƒsƒ“ƒO
+		// ç”»é¢å…¨ä½“ã‚’è¦†ã†ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚’æã„ã¦ãƒˆãƒ¼ãƒ³ãƒãƒƒãƒ”ãƒ³ã‚°
 		tpotEngine.set_attribute(vbo_tonemap, gl, prg_tonemap, SHADER_TYPE.TONEMAP);
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo_tonemap);
 
@@ -125,10 +121,10 @@ onload = function(){
 		
 		gl.drawElements(gl.TRIANGLES, 3*2, gl.UNSIGNED_SHORT, 0);
 
-		// •`‰æXV
+		// æç”»æ›´æ–°
 		gl.flush();
 		
-		// XV‚ğ‘Ò‚Â
+		// æ›´æ–°ã‚’å¾…ã¤
 		frames++;
 		setTimeout(arguments.callee, 1000 / 60);
 	})();

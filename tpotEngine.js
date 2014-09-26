@@ -134,13 +134,13 @@ var tpotEngine = function(){
 			var frameBuffer = gl.createFramebuffer();
 			gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
 			
-			// [“xƒoƒbƒtƒ@—pƒŒƒ“ƒ_[ƒoƒbƒtƒ@‚Ì¶¬‚ÆƒoƒCƒ“ƒh
+			// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆã¨ãƒã‚¤ãƒ³ãƒ‰
 			var depthRenderBuffer = gl.createRenderbuffer();
 			gl.bindRenderbuffer(gl.RENDERBUFFER, depthRenderBuffer);
 			gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
 			gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthRenderBuffer);
 			
-			// ƒtƒŒ[ƒ€ƒoƒbƒtƒ@—pƒeƒNƒXƒ`ƒƒ‚Ì¶¬
+			// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç”Ÿæˆ
 			var fTexture = gl.createTexture();
 			gl.bindTexture(gl.TEXTURE_2D, fTexture);
 			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, format, null);
@@ -152,7 +152,12 @@ var tpotEngine = function(){
 			
 			var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
 			if (status != gl.FRAMEBUFFER_COMPLETE) {
-				alert("can not render to floating point textures");
+				if(format == gl.FLOAT){
+					// floating buffer ãŒãƒ€ãƒ¡ãªã¨ãã¯ã€ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹ã¯ãšã®RGBA8ã§ã®ä½œæˆã‚’è©¦ã¿ã‚‹
+					alert("can not render to floating point textures");
+					return create_framebuffer(width, height, gl.UNSIGNED_BYTE, gl);
+				}
+				alert("can not render to assigned textures");
 				return null;
 			}
 			
